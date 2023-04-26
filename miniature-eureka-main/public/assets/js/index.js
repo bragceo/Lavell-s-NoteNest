@@ -219,3 +219,28 @@ app.post('/api/notes', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on PORT ${PORT}`);
 });
+response) => response.json())
+    .then((data) => {
+      noteTitle.value = '';
+      noteTextarea.value = '';
+      getAndRenderNotes();
+    });
+});
+
+newNoteBtn.addEventListener('click', () => {
+  noteTitle.value = '';
+  noteTextarea.value = '';
+});
+
+noteList.addEventListener('click', (event) => {
+  if (event.target.tagName === 'LI') {
+    fetch(`/api/notes/${event.target.dataset.id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        noteTitle.value = data.title;
+        noteTextarea.value = data.text;
+      });
+  }
+});
+
+getAndRenderNotes();
