@@ -181,3 +181,40 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const fs = require('fs');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
+});
+
+app.get('/notes', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'notes.html'));
+});
+
+app.get('/api/notes', (req, res) => {
+  const notes = JSON.parse(fs.readFileSync('notes.json', 'utf8'));
+  res.json(notes);
+});
+
+app.post('/api/notes', (req, res) => {
+  const newNote = req.body;
+  const notes = JSON.parse(fs.readFileSync('notes.json', 'utf8'));
+  newNote.id = notes.length + 1;
+  notes.push(newNote);
+  fs.writeFileSync('notes.json', JSON.stringify(notes));
+  res.json(newNote);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server listening on PORT ${PORT}`);
+});
