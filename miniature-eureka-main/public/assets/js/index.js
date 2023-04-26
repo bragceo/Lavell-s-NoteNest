@@ -65,7 +65,8 @@ const renderActiveNote = () => {
     noteText.value = '';
   }
 };
-
+// Sets the activeNote to an empty object and allows the user to enter a new note
+const handleNewNoteView = (e) => {
 const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
