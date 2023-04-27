@@ -70,6 +70,12 @@ app.delete('/api/notes/:id', (req, res) => {
 
 
 // Start the server
-app.listen(3000, () => {
-    console.log('Server listening on port 3000');
+// app.listen(3000, () => {
+//     console.log('Server listening on port 3000');
+// });
+
+const PORT = process.env.PORT || 3000; // Use Heroku's PORT or a default port when running locally
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
